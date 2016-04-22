@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ Hibernate, Relational Persistence for Idiomatic Java ~ ~ License: 
+	GNU Lesser General Public License (LGPL), version 2.1 or later. ~ See the 
+	lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>. -->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.test.mytest.User" table="users">
+		<meta attribute="class-description">
+			This class contains the user details.
+		</meta>
+		<id name="id" type="int" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" type="string" />
+		<component name="proteinData">
+			<property name="total" column="total" type="int" />
+			<property name="goal" column="goal" type="int" />
+		</component>
+		<set name="userHistory" table="userhistory">
+			<key column="user_id" />
+			<composite-element class="com.test.mytest.UserHistory">
+				<property name="entryTime" type="date" column="entryTime"></property>
+				<property name="entry" type="string" column="entry"></property>
+			</composite-element>
+		</set>
+		<join table="usergoalalert" optional="true">
+		<key column="user_id" />
+		<many-to-one name="goalAlert" column="goalalert_id" not-null="true" unique="true" cascade="save-update" />
+		</join>
+	</class>
+	<query name="AllUsers">
+	<![CDATA[from User]]>
+	</query>
+</hibernate-mapping>
